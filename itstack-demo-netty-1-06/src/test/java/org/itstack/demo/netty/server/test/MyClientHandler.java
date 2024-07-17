@@ -1,4 +1,4 @@
-package org.itstack.demo.netty.server;
+package org.itstack.demo.netty.server.test;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -10,26 +10,23 @@ import java.util.Date;
 /**
  * 虫洞栈：https://bugstack.cn
  * 公众号：bugstack虫洞栈  ｛获取学习源码｝
- * Create by fuzhengwei on 2019
+ * Create by 小傅哥 on 2020
  */
-public class MyServerHandler extends ChannelInboundHandlerAdapter {
+public class MyClientHandler extends ChannelInboundHandlerAdapter {
 
     /**
      * 当客户端主动链接服务端的链接后，这个通道就是活跃的了。也就是客户端与服务端建立了通信通道并且可以传输数据
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        //当有客户端链接后，添加到channelGroup通信组
-        ChannelHandler.channelGroup.add(ctx.channel());
-        //日志信息
         SocketChannel channel = (SocketChannel) ctx.channel();
         System.out.println("链接报告开始");
-        System.out.println("链接报告信息：有一客户端链接到本服务端");
+        System.out.println("链接报告信息：本客户端链接到服务端。channelId：" + channel.id());
         System.out.println("链接报告IP:" + channel.localAddress().getHostString());
         System.out.println("链接报告Port:" + channel.localAddress().getPort());
         System.out.println("链接报告完毕");
-        //通知客户端链接建立成功
-        String str = "通知客户端链接建立成功" + " " + new Date() + " " + channel.localAddress().getHostString() + "\r\n";
+
+        String str = "我是客户端 服务器大哥你好 " + "我的主机地址是: " + channel.localAddress().getHostString() + "\r\n";
         ctx.writeAndFlush(str);
     }
 
@@ -38,18 +35,15 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("客户端断开链接" + ctx.channel().localAddress().toString());
-        // 当有客户端退出后，从channelGroup中移除。
-        ChannelHandler.channelGroup.remove(ctx.channel());
+        System.out.println("断开链接" + ctx.channel().localAddress().toString());
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         //接收msg消息{与上一章节相比，此处已经不需要自己进行解码}
-        System.out.println("我是服务端,我接收到客户端的消息 客户端发过来的消息内容是  [ " + msg + " ]");
-        //收到消息后，群发给客户端
-        String str = "客户端你好,我收到了你发过来的消息 [ " + msg + " ]\r\n";
-        ChannelHandler.channelGroup.writeAndFlush(str);
+        System.out.println( "我是客户端 我接受到了来自服务端的消息: [ " + msg+" ]");
+        //通知客户端链消息发送成功
+       // ctx.writeAndFlush("客户端收到：" + new Date() + "\r\n");
     }
 
     /**

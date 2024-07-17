@@ -29,6 +29,7 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
         }
 
         if (msg instanceof HttpContent) {
+            // 获取Post请求的body内容
             LastHttpContent httpContent = (LastHttpContent) msg;
             ByteBuf byteData = httpContent.content();
             if (!(byteData instanceof EmptyByteBuf)) {

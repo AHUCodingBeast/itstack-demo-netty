@@ -50,6 +50,8 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
         String str = "服务端收到：" + new Date() + " " + msg + "\r\n";
         ByteBuf buf = Unpooled.buffer(str.getBytes().length);
         buf.writeBytes(str.getBytes("GBK"));
+
+        //为什么要借助ByteBuf的writeBytes方法？原因就是ByteBuf是Netty提供的，可以直接写入数据，通道里面不能直接写字符串 必须是写二进制字节
         ctx.writeAndFlush(buf);
     }
 

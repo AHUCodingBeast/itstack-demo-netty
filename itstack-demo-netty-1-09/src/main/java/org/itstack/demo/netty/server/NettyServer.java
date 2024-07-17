@@ -8,10 +8,12 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 /**
- * 虫洞栈：https://bugstack.cn
- * 公众号：bugstack虫洞栈  ｛关注获取学习源码｝
- * 虫洞群：①群5398358 ②群5360692
- * Create by fuzhengwei on 2019
+ 数据传输过程中有各种情况；整包数据、半包数据、粘包数据，
+ 比如我们设定开始符号02、结束符号03；
+ 整包数据；02 89 78 54 03
+ 半包数据；02 89 78
+ 粘包数据；02 89 78 54 03 02 89
+
  */
 public class NettyServer {
 
