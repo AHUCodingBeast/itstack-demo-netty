@@ -28,5 +28,6 @@ maxTime: 每次调用 release 方法释放带宽的最长时间, 单位为毫秒
 
 
 MyServerHandler：
+使用consumeMsgLength原子整数变量来累加每次传输的字节数
+在handlerAdded 方法中（这个方法在处理器加入处理器链的时候就会触发） 定义了一个任务 counterTask 这个任务的作用就是，当需要发送的数据已经全部发送完毕的时候打印一下发送速率的数值
 
-在handlerAdded 方法中（这个方法在处理器加入处理器链的时候就会触发） 定义了一个任务 counterTask 这个任务的作用就是

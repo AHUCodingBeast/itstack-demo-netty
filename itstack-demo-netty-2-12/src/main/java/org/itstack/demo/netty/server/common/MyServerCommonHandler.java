@@ -46,6 +46,14 @@ public abstract class MyServerCommonHandler extends SimpleChannelInboundHandler<
     protected ChannelProgressivePromise getChannelProgressivePromise(ChannelHandlerContext ctx, Consumer<ChannelProgressiveFuture> completedAction) {
         ChannelProgressivePromise channelProgressivePromise = ctx.newProgressivePromise();
         channelProgressivePromise.addListener(new ChannelProgressiveFutureListener() {
+
+            /**
+             * 当数据传输有进展时触发此方法
+             * @param future
+             * @param progress 已传输的字节数
+             * @param total 总字节数
+             * @throws Exception
+             */
             @Override
             public void operationProgressed(ChannelProgressiveFuture future, long progress, long total) throws Exception {
                 consumeMsgLength.addAndGet(progress - priorProgress);
