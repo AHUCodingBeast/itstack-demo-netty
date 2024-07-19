@@ -1,0 +1,29 @@
+前面的几个netty案例  感觉上类似 qq聊天，发过去消息，什么时候回复都可以。但是不是所有场景都是要这样的
+例如我们RPC框架通信，从感觉上类似http调用，需要在一定时间内返回，否则就会发生超时断开。
+这里我们选择netty作为我们的socket框架，采用future方式进行通信。
+这个项目就是讲的如何实现同步通信 一来一回那种方式。
+
+代码详细分析：
+
+客户端分析：
+StartClient 开启了一个单独的线程然后唤醒客户端（ClientSocket） 然后拿到客户端的ChannelFuture对象（用于后面调用writeAndFlush发送数据）
+组装Request业务对象，开始向Channel中写入数据，具体怎么写，则分为下述几步：
+- 1、首先为Request业务对象生成一个唯一的请求ID，然后构建一个自定义的WriteFuture对象，这个对象用于接收后面的异步响应结果
+- 2、将请求ID和WriteFuture对象 构建为一组映射存到内存里面
+- 3、调用Channel的writeAndFlush方法，将业务对象写入Channel中
+- 4、在调用writeAndFlush 方法的时候额外还绑定了一个写通道成功的回调函数，也就是说如果通道没写成功需要清理第二步的映射关系
+- 5、客户端的MyClientHandler中定义了收到服务端的消息以后,会通过第二步的映射找到请求对应的WriteFuture对象，并为这个对象设置上响应内容（也就是调用WriteFuture对象 对象的setResponse方法）
+- 6、调用WriteFuture对象 对象的setResponse方法时会触达CountDownLatch减1  从而唤醒还在调用get方法等待响应的线程，于是get方法就能返回来自服务端的响应了
+
+
+服务端分析：
+对于服务端则比较简单 在StartServer类中 开启了一个单独的线程然后唤醒服务器（ServerSocket）
+在MyServerHandler 中的channelRead0方法中处理客户端发送过来的数据
+返回给客户端的数据类型就是Response，这个对象还会把客户发送过来的Requestid 原样返回给客户端 让客户端的第5步得以执行
+
+
+要点分析：
+ReferenceCountUtil.release(msg); 这个方法，这个方法是netty提供的用于释放对象引用的工具方法，这个方法的作用就是释放掉msg对象
+Netty框架鼓励用户主动管理资源，尤其是对于那些成本较高的资源（如直接内存）
+Request对象可能包含了一些较大的数据结构，比如ByteBuf，如果没有及时释放，这部分内存将一直被持有，
+即使已经完成了对该对象的所有处理。随着请求的数量增多，累积的未释放内存可能导致严重的内存消耗

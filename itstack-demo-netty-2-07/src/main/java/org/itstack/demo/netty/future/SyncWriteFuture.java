@@ -62,6 +62,8 @@ public class SyncWriteFuture implements WriteFuture<Response> {
 
     public void setResponse(Response response) {
         this.response = response;
+        
+        // 收到响应以后这里计数器会减1  从而唤醒正在执行get方法的线程 返回
         latch.countDown();
     }
 

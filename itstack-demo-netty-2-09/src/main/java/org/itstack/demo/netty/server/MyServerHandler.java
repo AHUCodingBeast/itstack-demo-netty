@@ -43,7 +43,11 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
         System.out.println("链接报告完毕");
 
         //保存用户信息
-        UserChannelInfo userChannelInfo = new UserChannelInfo(channel.localAddress().getHostString(), channel.localAddress().getPort(), channel.id().toString(), new Date());
+        UserChannelInfo userChannelInfo = new UserChannelInfo(
+                channel.localAddress().getHostString(),
+                channel.localAddress().getPort(),
+                channel.id().toString(),
+                new Date());
         extServerService.getRedisUtil().pushObj(userChannelInfo);
         CacheUtil.cacheChannel.put(channel.id().toString(), channel);
         //通知客户端链接建立成功

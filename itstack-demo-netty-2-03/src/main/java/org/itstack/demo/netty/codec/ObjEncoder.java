@@ -19,6 +19,13 @@ public class ObjEncoder extends MessageToByteEncoder {
         this.genericClass = genericClass;
     }
 
+    /**
+     * 代码解释：
+     * 首先检查输入对象in是否是genericClass类型的实例。
+     * 如果是，则使用SerializationUtil.serialize()方法将对象序列化为字节数组data。
+     * 接下来，在输出缓冲区out中写入data的长度，这有助于解码端知道如何正确读取后续的数据。
+     * 最后，将整个字节数组data写入到out中。
+     */
     @Override
     protected void encode(ChannelHandlerContext ctx, Object in, ByteBuf out)  {
         if (genericClass.isInstance(in)) {

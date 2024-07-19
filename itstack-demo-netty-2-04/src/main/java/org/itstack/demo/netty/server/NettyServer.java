@@ -17,7 +17,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 public class NettyServer {
 
     //配置服务端NIO线程组
-    private EventLoopGroup parentGroup = new NioEventLoopGroup(); //NioEventLoopGroup extends MultithreadEventLoopGroup Math.max(1, SystemPropertyUtil.getInt("io.netty.eventLoopThreads", NettyRuntime.availableProcessors() * 2));
+    private EventLoopGroup parentGroup = new NioEventLoopGroup();
     private EventLoopGroup childGroup = new NioEventLoopGroup();
     private Channel channel;
 

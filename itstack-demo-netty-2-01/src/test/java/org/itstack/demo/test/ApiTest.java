@@ -42,6 +42,9 @@ public class ApiTest {
                         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
                             //接收msg消息{与上一章节相比，此处已经不需要自己进行解码}
                             System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " 客户端接收到消息：" + msg);
+
+                            sleep();
+                            ctx.writeAndFlush("张健客户端向服务端发送消息\n");
                         }
                     });
                 }
@@ -62,6 +65,15 @@ public class ApiTest {
             e.printStackTrace();
         } finally {
             workerGroup.shutdownGracefully();
+        }
+    }
+
+
+    private static void sleep(){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 

@@ -25,9 +25,12 @@ public class NettyClient {
         try {
             Bootstrap b = new Bootstrap();
             b.group(workerGroup);
+            // 指定NioSocketChannel作为通道类型，这是用于TCP/IP连接的标准选择。
             b.channel(NioSocketChannel.class);
+            // 配置ChannelOption.AUTO_READ为true，这意味着Netty将自动读取数据，而无需显式调用。
             b.option(ChannelOption.AUTO_READ, true);
             b.handler(new MyChannelInitializer());
+            //使用b.connect()尝试与给定的地址和端口建立连接，syncUninterruptibly()确保方法不会因中断异常而失败，而是等待直到连接完成。
             channelFuture = b.connect(inetHost, inetPort).syncUninterruptibly();
             this.channel = channelFuture.channel();
         } catch (Exception e) {

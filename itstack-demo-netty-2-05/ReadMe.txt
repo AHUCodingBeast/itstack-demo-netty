@@ -1,0 +1,7 @@
+本章节我们模仿微信聊天页面，开发一个基于Netty搭建WebSocket通信案例。Netty的应用方面非常广；聊天、MQ、RPC、数据等等，在5G到来的时候更加需要大量数据传输，Netty的应用也会更加广阔。
+
+这个案例使用SpringBoot+Netty+WebSocket搭建功能。
+使用Netty提供的HttpServerCodec、HttpObjectAggregator、ChunkedWriteHandler进行编码解码处理。
+通信逻辑尽可能简化到只了解根本，便于后续个人应用及开发的拓展。
+客户端链接成功后，向服务端发送请求获取个人信息，也可以拓展为登录请求。
+获取个人信息后，就可以知道差异化展示消息到页面。

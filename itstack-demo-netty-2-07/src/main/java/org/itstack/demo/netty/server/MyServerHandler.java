@@ -22,7 +22,8 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter{
         request.setRequestId(msg.getRequestId());
         request.setParam(msg.getResult() + " 请求成功，反馈结果请接受处理｛公众号：bugstack虫洞栈 博客栈：https://bugstack.cn｝。");
         ctx.writeAndFlush(request);
-        //释放
+        //在处理完Request对象之后，我们应该调用release()方法来通知Netty我们可以释放这个对象及其占用的资源了。
+        // 这样做有助于提高应用的整体性能和资源利用率。
         ReferenceCountUtil.release(msg);
     }
 

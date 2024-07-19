@@ -21,6 +21,14 @@ public class ObjDecoder extends ByteToMessageDecoder {
         this.genericClass = genericClass;
     }
 
+    /**
+     * 首先检查输入缓冲区（in）是否至少有4个可读字节，如果没有，则直接返回。
+     * 然后标记当前读取位置，以便如果数据不足时可以回退到当前位置。
+     * 接下来读取前四个字节作为数据长度。
+     * 如果剩余的可读字节数小于之前读取的数据长度，说明数据不完整，此时需要重置读取位置并返回，等待更多数据到来。
+     * 创建一个与数据长度相等的字节数组，并从输入缓冲区读取相应数量的字节到数组中。
+     * 最后使用SerializationUtil.deserialize方法将字节数组反序列化为目标类型对象，并添加到输出列表out中。
+     */
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) {
         if (in.readableBytes() < 4) {

@@ -24,6 +24,10 @@ public class MyChannelInitializer extends ChannelInitializer<SocketChannel> {
          * 2、writerIdleTimeSeconds 写超时时间
          * 3、allIdleTimeSeconds    读写超时时间
          * 4、TimeUnit.SECONDS 秒[默认为秒，可以指定]
+         * 下面这行代码的意思是：如果在2秒内没有读、写或读写操作，就会触发对应的空闲事件。
+         * 在Netty框架中，IdleStateHandler是一个重要的处理器，主要用于检测通道两端长时间没有读、写或者读写操作的情况，即所谓的“空闲”状态。
+         * 它的核心作用在于帮助实现长连接的心跳机制，这对于保持网络连接的健康状态至关重要，尤其是对于那些需要维持持久化连接的应用场景来说。
+         * IdleStateHandler 在检测到空闲事件的时候 会触发一个IdleStateEvent事件，这个事件会被传递给管道中的下一个处理器（代码中在MyServerHandler进行了处理）。
          */
         channel.pipeline().addLast(new IdleStateHandler(2, 2, 2));
         // 基于换行符号

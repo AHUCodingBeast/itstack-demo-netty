@@ -26,9 +26,10 @@ public class NettyClient {
     private void connect(String inetHost, int inetPort) throws SSLException {
 
         //引入SSL安全验证
-        File certChainFile = new File("E:\\itstack\\GIT\\itstack.org\\itstack-demo-netty\\itstack-demo-netty-2-13\\src\\main\\java\\org\\itstack\\demo\\netty\\ssl\\client\\client.crt");
-        File keyFile = new File("E:\\itstack\\GIT\\itstack.org\\itstack-demo-netty\\itstack-demo-netty-2-13\\src\\main\\java\\org\\itstack\\demo\\netty\\ssl\\client\\pkcs8_client.key");
-        File rootFile = new File("E:\\itstack\\GIT\\itstack.org\\itstack-demo-netty\\itstack-demo-netty-2-13\\src\\main\\java\\org\\itstack\\demo\\netty\\ssl\\server\\ca.crt");
+
+        File certChainFile = new File("D:\\work-space-plant\\itstack-demo-netty\\itstack-demo-netty-2-13\\src\\main\\java\\org\\itstack\\demo\\netty\\ssl\\client\\client.crt");
+        File keyFile = new File("D:\\work-space-plant\\itstack-demo-netty\\itstack-demo-netty-2-13\\src\\main\\java\\org\\itstack\\demo\\netty\\ssl\\client\\pkcs8_client.key");
+        File rootFile = new File("D:\\work-space-plant\\itstack-demo-netty\\itstack-demo-netty-2-13\\src\\main\\java\\org\\itstack\\demo\\netty\\ssl\\client\\ca.crt");
         SslContext sslCtx = SslContextBuilder.forClient().keyManager(certChainFile, keyFile).trustManager(rootFile).build();
 
         //配置客户端NIO线程组

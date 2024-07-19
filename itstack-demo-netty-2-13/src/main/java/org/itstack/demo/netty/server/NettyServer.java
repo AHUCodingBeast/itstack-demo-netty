@@ -27,13 +27,13 @@ public class NettyServer {
     private void bing(int port) throws SSLException {
 
         //引入SSL安全验证
-        File certChainFile = new File("E:\\itstack\\GIT\\itstack.org\\itstack-demo-netty\\itstack-demo-netty-2-13\\src\\main\\java\\org\\itstack\\demo\\netty\\ssl\\server\\server.crt");
-        File keyFile = new File("E:\\itstack\\GIT\\itstack.org\\itstack-demo-netty\\itstack-demo-netty-2-13\\src\\main\\java\\org\\itstack\\demo\\netty\\ssl\\server\\pkcs8_server.key");
-        File rootFile = new File("E:\\itstack\\GIT\\itstack.org\\itstack-demo-netty\\itstack-demo-netty-2-13\\src\\main\\java\\org\\itstack\\demo\\netty\\ssl\\server\\ca.crt");
+        File certChainFile = new File("D:\\work-space-plant\\itstack.org\\itstack-demo-netty\\itstack-demo-netty-2-13\\src\\main\\java\\org\\itstack\\demo\\netty\\ssl\\server\\server.crt");
+        File keyFile = new File("D:\\work-space-plant\\itstack.org\\itstack-demo-netty\\itstack-demo-netty-2-13\\src\\main\\java\\org\\itstack\\demo\\netty\\ssl\\server\\pkcs8_server.key");
+        File rootFile = new File("D:\\work-space-plant\\itstack.org\\itstack-demo-netty\\itstack-demo-netty-2-13\\src\\main\\java\\org\\itstack\\demo\\netty\\ssl\\server\\ca.crt");
         SslContext sslCtx = SslContextBuilder.forServer(certChainFile, keyFile).trustManager(rootFile).clientAuth(ClientAuth.REQUIRE).build();
 
         //配置服务端NIO线程组
-        EventLoopGroup parentGroup = new NioEventLoopGroup(1); //NioEventLoopGroup extends MultithreadEventLoopGroup Math.max(1, SystemPropertyUtil.getInt("io.netty.eventLoopThreads", NettyRuntime.availableProcessors() * 2));
+        EventLoopGroup parentGroup = new NioEventLoopGroup(1);
         EventLoopGroup childGroup = new NioEventLoopGroup();
         try {
             ServerBootstrap b = new ServerBootstrap();

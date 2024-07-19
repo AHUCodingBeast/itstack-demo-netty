@@ -71,10 +71,10 @@ public class MyClientHandler extends ChannelInboundHandlerAdapter {
         /**模拟传输过程中断，场景测试可以注释掉
          *
 
-        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " bugstack虫洞栈客户端传输文件信息[主动断开链接，模拟断点续传]");
-        ctx.flush();
-        ctx.close();
-        System.exit(-1);*/
+         System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + " bugstack虫洞栈客户端传输文件信息[主动断开链接，模拟断点续传]");
+         ctx.flush();
+         ctx.close();
+         System.exit(-1);*/
     }
 
     /**
