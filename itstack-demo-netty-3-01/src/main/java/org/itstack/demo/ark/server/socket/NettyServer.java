@@ -28,8 +28,9 @@ public class NettyServer implements Callable<Channel> {
         this.address = address;
     }
 
-    //配置服务端NIO线程组
-    private final EventLoopGroup parentGroup = new NioEventLoopGroup(); //NioEventLoopGroup extends MultithreadEventLoopGroup Math.max(1, SystemPropertyUtil.getInt("io.netty.eventLoopThreads", NettyRuntime.availableProcessors() * 2));
+    //在创建Netty服务端的时候，代码中实例化了两个EventLoopGroup分别是parentGroup、childGroup，parentGroup 主要用于接收请求链接，链接成功后交给childGroup处理收发数据等事件。
+    //NioEventLoopGroup可以在构造方法中传入需要启动的线程数，默认的情况下他会在采用计算机核心数2的方式去启动线程数量。另外目前很多计算机采用了超线程技术，那么4核心的机器，超线程后就是8核心，Netty在启动的时候随时会启动82=16个线程。
+    private final EventLoopGroup parentGroup = new NioEventLoopGroup();
     private final EventLoopGroup childGroup = new NioEventLoopGroup();
     private Channel channel;
 
